@@ -3,17 +3,11 @@ import React, { useEffect, useState } from "react";
 import { FlaskConical, TabletSmartphone, Wrench, Droplets, ShieldCheck, Beaker, Hammer } from "lucide-react";
 
 /**
- * PURELLA WATER — FULL WEBSITE MOCKUP (React + Tailwind, single-file)
- * Pages: Home, Advanced Filtration, Softening, Conditioners, Well Water, Process, Resources
- * Routing: simple hash router (no external deps)
- * Branding: Purella Water — domain www.purellawater.com — phone (888) 555-0199
- * Images expected (replace with your own):
- *   /Purella logo.png
- *   /images/hero-water.jpg
- *   /images/filtration.jpg  /images/softener.jpg  /images/conditioner.jpg
- *   /images/frp-tank-cutaway.png
- *   /images/purella-test-strip.jpg
- *   /images/purella-factory.jpg  /images/purella-lab.jpg
+ * PURELLA WATER — FULL WEBSITE MOCKUP (React + Tailwind)
+ * Updates:
+ * - “Conditioners” renamed to “Saltless Conditioners”
+ * - Purella logo routes to #home (acts as Home)
+ * - New page: Ultraviolet Filtration (#uv) with nav link
  */
 
 const PHONE_DISPLAY = "(888) 555-0199";
@@ -40,150 +34,131 @@ function CtaSecondary({ href, children }: { href: string; children: React.ReactN
   );
 }
 
-type Page = "home" | "filtration" | "softening" | "conditioners" | "well" | "process" | "resources";
+type Page = "home" | "filtration" | "softening" | "conditioners" | "well" | "uv" | "process" | "resources";
 
-// ---------------- Home ----------------
+/* ---------------- Home ---------------- */
 function HomePage() {
   return (
     <>
-      {/* HERO */}
-      <section className="relative bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 py-14 md:py-20 grid md:grid-cols-2 gap-10 items-center">
-          <div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-cyan-100 text-cyan-700 px-3 py-1 text-xs font-semibold">
-              Factory-Direct • Made in Florida
+      {/* HERO with inline lead form (LeafFilter-style) */}
+      <section className="bg-gradient-to-r from-cyan-800 to-cyan-600 text-white">
+        <div className="max-w-7xl mx-auto px-4 py-10 md:py-14 grid md:grid-cols-[1.4fr_.9fr] gap-6 items-stretch">
+          {/* Left: image + headline */}
+          <div className="rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-white/5">
+            <div className="aspect-[16/9] md:aspect-[21/10] relative">
+              <img src="/images/hero-water.jpg" alt="Family in kitchen with Purella water" className="absolute inset-0 w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-black/10" />
             </div>
-            <h1 className="text-4xl md:text-5xl font-extrabold leading-tight tracking-tight mt-4">
-              Custom whole-home water systems —
-              <span className="block">designed, built & installed in Florida</span>
-            </h1>
-            <p className="mt-4 text-lg text-slate-700 max-w-xl">
-              Our Purella Water Experts test your water in real time using our <strong>patent-pending lab-grade test strip</strong> and <strong>Purella iPad App</strong>. Immediate, precise readings for chlorine, hardness, pH, and more — right in your kitchen.
-            </p>
-            <p className="mt-2 text-lg text-slate-700 max-w-xl">
-              Then the <strong>Purella App</strong> designs a <strong>custom-built system</strong> — media blend, tank size, and valve programming — engineered to give your home the <strong>best water possible</strong>.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <CtaPrimary href="#lead">Get Free Water Test</CtaPrimary>
-              <CtaSecondary href="#filtration">Explore Systems</CtaSecondary>
+            <div className="p-6 md:p-8">
+              <h1 className="text-3xl md:text-5xl font-extrabold leading-tight tracking-tight">
+                Better Water Starts at Home.
+              </h1>
+              <p className="mt-3 text-white/90 text-lg max-w-2xl">
+                Discover cleaner, safer, better‑tasting water with Purella’s in‑home systems — designed, built & installed in Florida.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <a href="#process" className="inline-flex items-center rounded-2xl px-5 py-3 text-base font-semibold bg-white text-cyan-800 hover:bg-slate-100 transition">How It Works</a>
+                <a href="#lead" className="inline-flex items-center rounded-2xl px-5 py-3 text-base font-semibold border border-white/30 hover:bg-white/10 transition">Get Free Water Test</a>
+              </div>
+              <div className="mt-6 flex flex-wrap gap-2 text-xs text-white/80">
+                <span className="inline-flex items-center rounded-full bg-white/10 px-3 py-1">NSF‑grade media</span>
+                <span className="inline-flex items-center rounded-full bg-white/10 px-3 py-1">Lifetime Support</span>
+                <span className="inline-flex items-center rounded-full bg-white/10 px-3 py-1">Made in USA</span>
+              </div>
             </div>
-            {/* Trust badges */}
-            <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
+          </div>
+
+          {/* Right: request free test form (front‑end only) */}
+          <div id="lead" className="bg-white text-slate-900 rounded-3xl shadow-2xl p-6 md:p-7 border">
+            <h2 className="text-2xl font-extrabold">Request a Free Water Test</h2>
+            <form className="mt-4 grid gap-3" onSubmit={(e)=>e.preventDefault()}>
+              <input className="rounded-xl border px-4 py-2.5" placeholder="Full Name" />
+              <input className="rounded-xl border px-4 py-2.5" placeholder="Email Address" type="email" />
+              <input className="rounded-xl border px-4 py-2.5" placeholder="Phone Number" />
+              <input className="rounded-xl border px-4 py-2.5" placeholder="ZIP Code" />
+              <button className="mt-1 inline-flex w-full justify-center rounded-xl bg-cyan-600 px-4 py-3 text-white font-semibold hover:bg-cyan-700">Get Started</button>
+              <div className="text-[11px] text-slate-500 text-center">By submitting, you agree to be contacted about your free test.</div>
+            </form>
+            <div className="mt-5 flex items-center justify-center gap-4 text-xs text-slate-600">
+              <span className="inline-flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-cyan-600"/>NSF</span>
+              <span className="inline-flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-cyan-600"/>Lifetime Support</span>
+              <span className="inline-flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-cyan-600"/>Made in USA</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* “What’s in your water” icons */}
+      <section className="bg-white">
+        <div className="max-w-7xl mx-auto px-4 py-10">
+          <h3 className="text-2xl md:text-3xl font-extrabold">What’s Really in Your Tap Water?</h3>
+          <p className="text-slate-600 mt-1">Your Purella Water Expert will test these on‑site in minutes.</p>
+          <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {[
+              { label: "Chlorine", Icon: Droplets },
+              { label: "Lead", Icon: ShieldCheck },
+              { label: "PFAS", Icon: FlaskConical },
+              { label: "Microorganisms", Icon: Wrench },
+            ].map(({label, Icon}) => (
+              <div key={label} className="rounded-2xl border p-5 text-center">
+                <Icon className="mx-auto text-cyan-600" size={28} />
+                <div className="mt-2 font-semibold">{label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Product tiles + How it works */}
+      <section className="bg-slate-50">
+        <div className="max-w-7xl mx-auto px-4 py-12 grid md:grid-cols-3 gap-6">
+          {/* Products */}
+          <div className="md:col-span-2">
+            <h3 className="text-2xl font-extrabold">Customized Filtration for Every Home</h3>
+            <div className="mt-5 grid sm:grid-cols-3 gap-4">
               {[
-                { label: "Made in Florida" },
-                { label: "Patent-Pending Testing" },
-                { label: "Installed in a Day" },
-                { label: "Factory Support for Life" },
-              ].map((b) => (
-                <div key={b.label} className="rounded-2xl border bg-white px-3 py-2 text-slate-700 text-center font-medium">
-                  {b.label}
+                { title: "Whole‑Home Systems", img: "/images/filtration.jpg" },
+                { title: "Carbon Filtration", img: "/images/filtration.jpg" },
+                { title: "Water Softener", img: "/images/softener.jpg" },
+              ].map((p)=> (
+                <div key={p.title} className="rounded-2xl bg-white border overflow-hidden">
+                  <div className="aspect-[4/3] bg-slate-100">
+                    <img src={p.img} alt={p.title} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="p-4">
+                    <div className="text-sm font-extrabold">{p.title}</div>
+                    <a href="#products" className="mt-2 inline-flex text-cyan-700 text-sm font-semibold">LEARN MORE</a>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="relative">
-            <div className="aspect-[4/3] md:aspect-[5/4] rounded-3xl overflow-hidden shadow-xl border bg-slate-100">
-              <img src="/images/hero-water.jpg" alt="Purella technician performing real-time water test using iPad app" className="w-full h-full object-cover" />
-            </div>
-            {/* Lead capture card */}
-            <div id="lead" className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[90%] md:w-auto bg-white border rounded-3xl shadow-lg p-4 md:p-5">
-              <div className="flex items-center gap-3">
-                <img src={LOGO_PATH} alt="Purella" className="h-8 w-auto" />
-                <div>
-                  <div className="text-sm font-semibold">Free In-Home Water Test</div>
-                  <div className="text-xs text-slate-600">Lab-grade results • Built just for your home</div>
-                </div>
-              </div>
-              <a href={PHONE_TEL} className="mt-3 inline-flex w-full justify-center rounded-xl bg-cyan-600 px-4 py-2 text-white font-semibold hover:bg-cyan-700">Call {PHONE_DISPLAY}</a>
-            </div>
-          </div>
+          {/* How it works */}
+          <aside className="rounded-3xl bg-white border p-6 h-max">
+            <h3 className="text-2xl font-extrabold">How It Works</h3>
+            <ol className="mt-3 space-y-3 text-slate-700">
+              <li><span className="font-bold text-cyan-700 mr-2">1</span>Free Water Test</li>
+              <li><span className="font-bold text-cyan-700 mr-2">2</span>Expert Recommendation</li>
+              <li><span className="font-bold text-cyan-700 mr-2">3</span>Professional Installation</li>
+            </ol>
+            <a href="#lead" className="mt-5 inline-flex w-full justify-center rounded-xl bg-cyan-600 px-4 py-2 text-white font-semibold hover:bg-cyan-700">Schedule Your Free Test</a>
+          </aside>
         </div>
       </section>
 
-      {/* BENEFITS STRIP */}
-      <section className="bg-white border-y">
-        <div className="max-w-7xl mx-auto px-4 py-8 grid sm:grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            { t: "Chlorine & Odor", d: "Catalytic carbon removes bad taste & smell." },
-            { t: "Stop Scale", d: "Protect glass, fixtures & appliances." },
-            { t: "Well Water", d: "Target iron, sulfur, and sediment." },
-            { t: "Health & Home", d: "Balanced pH and great-tasting water." },
-          ].map((i) => (
-            <div key={i.t} className="rounded-2xl border px-4 py-5">
-              <div className="text-base font-bold">{i.t}</div>
-              <div className="text-sm text-slate-600 mt-1">{i.d}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* SOLUTIONS GRID */}
-      <section id="products" className="py-16 md:py-20">
-        <div className="max-w-7xl mx-auto px-4">
-          <SectionTitle>Solutions for every home</SectionTitle>
-          <p className="text-slate-600 mt-2 max-w-2xl">Choose the path that fits your water. We customize every install based on your test.</p>
-          <div className="mt-8 grid md:grid-cols-3 gap-6">
-            {[
-              { title: "Advanced Filtration", desc: "Catalytic carbon-led multi-media blend.", img: "/images/filtration.jpg", to: "#filtration" },
-              { title: "Water Softening", desc: "Stop scale. Protect fixtures & appliances.", img: "/images/softener.jpg", to: "#softening" },
-              { title: "Conditioners", desc: "Balance pH and reduce aggressiveness.", img: "/images/conditioner.jpg", to: "#conditioners" },
-            ].map((card) => (
-              <div key={card.title} className="border rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition">
-                <div className="aspect-[16/9] bg-slate-100">
-                  <img src={card.img} alt={card.title} className="w-full h-full object-cover" />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold">{card.title}</h3>
-                  <p className="text-slate-600 mt-1">{card.desc}</p>
-                  <div className="mt-5 flex gap-3">
-                    <a href="#lead" className="rounded-xl border px-4 py-2 font-semibold hover:bg-slate-50">Free Water Test</a>
-                    <a href={card.to} className="rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 font-semibold">Learn More</a>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* PROCESS PREVIEW */}
-      <section className="bg-slate-50 py-14 border-t">
-        <div className="max-w-7xl mx-auto px-4">
-          <SectionTitle>The Purella Process</SectionTitle>
-          <div className="mt-8 grid md:grid-cols-3 gap-6">
-            {[{ n: 1, t: "Test", Icon: FlaskConical, d: "Your Purella Water Expert uses our patent-pending lab-grade test strip and iPad app to measure your water’s chlorine, hardness, pH, and metals instantly — right in your home. Results are verified in real time through Purella’s Stuart, FL lab software." }, { n: 2, t: "Design", Icon: TabletSmartphone, d: "Using your unique test results, the Purella app automatically builds a custom system blueprint — selecting the perfect media blend, tank size, and valve settings to create the best water possible for your home." }, { n: 3, t: "Install", Icon: Wrench, d: "Our local teams install your system with precision, optimizing flow, programming, and pressure for your home’s exact plumbing and chemistry." }].map((s) => (
-              <div key={s.n} className="rounded-3xl bg-white border p-6 text-center">
-                <s.Icon className="mx-auto text-cyan-600 mb-4" size={48} />
-                <div className="text-5xl font-black text-cyan-600">{s.n}</div>
-                <div className="mt-2 text-lg font-bold">{s.t}</div>
-                <div className="text-sm text-slate-700 mt-1">{s.d}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SOCIAL PROOF / TESTIMONIAL */}
-      <section className="py-14">
-        <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-8 items-center">
-          <div className="md:col-span-2 rounded-3xl border p-6 bg-white">
-            <div className="text-2xl font-extrabold">“Water tastes incredible and the rotten-egg smell is gone.”</div>
-            <p className="mt-2 text-slate-700">Our installer tested, designed, and installed the system the same week. Professional and spotless work.</p>
-            <div className="mt-4 text-sm text-slate-600">— Homeowner in Stuart, FL</div>
-          </div>
-          <div className="rounded-3xl border p-6 bg-slate-50 text-center">
-            <div className="text-3xl font-black">4.9★</div>
-            <div className="text-sm text-slate-600">Average homeowner rating</div>
-            <div className="mt-3 text-xs text-slate-500">BBB A+ • Local, insured installers</div>
-          </div>
+      {/* Sticky CTA strip */}
+      <section className="bg-cyan-700 text-white">
+        <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="text-lg font-semibold text-center md:text-left">Schedule Your Free In‑Home Test Today</div>
+          <a href="#lead" className="inline-flex items-center rounded-2xl px-5 py-3 text-base font-semibold bg-white text-cyan-800 hover:bg-slate-100">Book My Free Water Test</a>
         </div>
       </section>
     </>
   );
 }
 
-// ---------------- Advanced Filtration ----------------
+/* ---------------- Advanced Filtration ---------------- */
 function AdvancedFiltrationPage() {
   return (
     <main className="max-w-7xl mx-auto px-4 py-16">
@@ -226,7 +201,7 @@ function AdvancedFiltrationPage() {
   );
 }
 
-// ---------------- Softening ----------------
+/* ---------------- Softening ---------------- */
 function SofteningPage() {
   return (
     <main className="max-w-7xl mx-auto px-4 py-16">
@@ -256,16 +231,16 @@ function SofteningPage() {
   );
 }
 
-// ---------------- Conditioners ----------------
+/* ---------------- Saltless Conditioners ---------------- */
 function ConditionersPage() {
   return (
     <main className="max-w-7xl mx-auto px-4 py-16">
-      <SectionTitle>Whole Home Conditioners</SectionTitle>
+      <SectionTitle>Saltless Conditioners</SectionTitle>
       <Beaker className="text-cyan-600 my-4" size={40} />
-      <p className="mt-3 text-slate-700 max-w-3xl">Purella Conditioners stabilize and optimize water chemistry. We combine catalytic carbon, neutralizing media, and polishing stages to balance pH, reduce aggressiveness, and protect plumbing/fixtures.</p>
+      <p className="mt-3 text-slate-700 max-w-3xl">Purella Saltless Conditioners stabilize and optimize water chemistry. We combine catalytic carbon, neutralizing media, and polishing stages to balance pH, reduce aggressiveness, and protect plumbing/fixtures.</p>
       <div className="mt-8 grid md:grid-cols-2 gap-6">
         <div className="rounded-3xl border p-6">
-          <h3 className="font-bold text-lg">Why Choose a Conditioner</h3>
+          <h3 className="font-bold text-lg">Why Choose a Saltless Conditioner</h3>
           <ul className="mt-3 space-y-2 text-sm text-slate-700">
             <li>• Neutralizes acidic/aggressive water</li>
             <li>• Helps prevent corrosion & pinhole leaks</li>
@@ -286,7 +261,7 @@ function ConditionersPage() {
   );
 }
 
-// ---------------- Well Water ----------------
+/* ---------------- Well Water ---------------- */
 function WellWaterPage() {
   return (
     <main className="max-w-7xl mx-auto px-4 py-16">
@@ -316,7 +291,189 @@ function WellWaterPage() {
   );
 }
 
-// ---------------- Process ----------------
+/* ---------------- Ultraviolet Filtration ---------------- */
+function UvPage() {
+  return (
+    <main className="max-w-7xl mx-auto px-4 py-16">
+      <SectionTitle>Ultraviolet Filtration</SectionTitle>
+      <p className="mt-3 text-slate-700 max-w-3xl">
+        UV disinfection inactivates bacteria, viruses, and other microorganisms without adding chemicals. Ideal as a polishing step for well water or as added protection for city water.
+      </p>
+      <div className="mt-8 grid md:grid-cols-2 gap-6">
+        <div className="rounded-3xl border p-6">
+          <h3 className="font-bold text-lg">Why UV?</h3>
+          <ul className="mt-3 space-y-2 text-sm text-slate-700">
+            <li>• Inactivates microbes with 254nm germicidal light</li>
+            <li>• Chemical‑free and taste‑neutral</li>
+            <li>• Continuous, on‑demand protection</li>
+          </ul>
+        </div>
+        <div className="rounded-3xl border p-6">
+          <h3 className="font-bold text-lg">How We Integrate It</h3>
+          <ul className="mt-3 space-y-2 text-sm text-slate-700">
+            <li>• Installed post‑filtration for maximum clarity & efficacy</li>
+            <li>• Sized to your home’s real flow rate</li>
+            <li>• Smart ballast with lamp‑life indicator</li>
+          </ul>
+        </div>
+      </div>
+      <CtaPrimary href="#lead">Get Free Water Test</CtaPrimary>
+    </main>
+  );
+}
+
+/* ---------------- Resources ---------------- */
+function ResourcesPage() {
+  const faqs = [
+    { q: "How long does installation take?", a: "Most installs are completed in a day. Larger or well-water setups may vary." },
+    { q: "Do you offer financing?", a: "Yes — flexible monthly plans are available for qualified buyers." },
+    { q: "Will this remove chlorine taste?", a: "Yes — our carbon media targets chlorine, taste & odor." },
+    { q: "Do you service existing systems?", a: "We offer service for our systems and many common brands." },
+  ];
+  return (
+    <main className="max-w-7xl mx-auto px-4 py-16">
+      <SectionTitle>Resources & FAQ</SectionTitle>
+      <p className="mt-3 text-slate-700 max-w-2xl">Learn about local water quality, signs you need a softener, and how Purella systems are maintained.</p>
+      <div className="mt-8 grid md:grid-cols-2 gap-6">
+        <article className="rounded-3xl border p-6 bg-white">
+          <h3 className="font-bold text-lg">Articles</h3>
+          <ul className="mt-3 space-y-2 text-sm text-cyan-700">
+            <li><a href="#">What’s in Florida’s Tap Water?</a></li>
+            <li><a href="#">Hardness Levels Explained</a></li>
+            <li><a href="#">How Often Should I Service My System?</a></li>
+          </ul>
+        </article>
+        <article className="rounded-3xl border p-6 bg-white">
+          <h3 className="font-bold text-lg">FAQs</h3>
+          <div className="mt-3 grid gap-3">
+            {faqs.map((f) => (
+              <details key={f.q} className="rounded-2xl border p-4">
+                <summary className="font-semibold cursor-pointer">{f.q}</summary>
+                <p className="mt-2 text-sm text-slate-700">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </article>
+      </div>
+    </main>
+  );
+}
+
+/* ---------------- App Shell (hash router) ---------------- */
+export default function App() {
+  const [page, setPage] = useState<Page>("home");
+
+  useEffect(() => {
+    const fromHash = () => {
+      const h = (window?.location?.hash || "#home").replace("#", "") as Page;
+      if (["home", "filtration", "softening", "conditioners", "well", "uv", "process", "resources"].includes(h)) setPage(h);
+    };
+    fromHash();
+    window.addEventListener("hashchange", fromHash);
+    return () => window.removeEventListener("hashchange", fromHash);
+  }, []);
+
+  const NavLink = ({ label, target }: { label: string; target: Page }) => (
+    <a
+      onClick={() => {
+        setPage(target);
+        window.location.hash = target;
+      }}
+      className={`px-3 py-2 rounded-xl text-sm font-semibold hover:bg-slate-100 cursor-pointer ${page === target ? "text-cyan-700 underline" : "text-slate-700"}`}
+    >
+      {label}
+    </a>
+  );
+
+  return (
+    <div className="min-h-screen bg-white text-slate-900">
+      {/* Header */}
+      <div className="sticky top-0 z-40 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 border-b">
+        <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {/* Logo now acts as home button */}
+            <a onClick={() => { setPage("home"); window.location.hash = "home"; }} className="cursor-pointer" aria-label="Go to Home">
+              <img src={LOGO_PATH} alt="Purella Water" className="h-10 w-auto" />
+            </a>
+            <span className="text-sm hidden md:inline font-medium">Vitality • Well-being • Hydration</span>
+          </div>
+          <nav className="flex items-center gap-1 md:gap-3">
+            {/* Home link removed */}
+            <NavLink label="Advanced Filtration" target="filtration" />
+            <NavLink label="Softening" target="softening" />
+            <NavLink label="Saltless Conditioners" target="conditioners" />
+            <NavLink label="Well Water" target="well" />
+            <NavLink label="Ultraviolet" target="uv" />
+            <NavLink label="Process" target="process" />
+            <NavLink label="Resources" target="resources" />
+          </nav>
+          <div className="flex items-center gap-3">
+            <a href={PHONE_TEL} className="text-sm md:text-base font-semibold">{PHONE_DISPLAY}</a>
+            <a
+              onClick={() => { setPage("home"); window.location.hash = "home"; }}
+              className="inline-flex items-center rounded-2xl px-4 py-2 text-sm md:text-base font-semibold shadow-sm bg-cyan-600 text-white hover:bg-cyan-700 transition cursor-pointer"
+            >
+              Free Water Test
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Routes */}
+      {page === "home" && <HomePage />}
+      {page === "filtration" && <AdvancedFiltrationPage />}
+      {page === "softening" && <SofteningPage />}
+      {page === "conditioners" && <ConditionersPage />}
+      {page === "well" && <WellWaterPage />}
+      {page === "uv" && <UvPage />}
+      {page === "process" && <ProcessPage />}
+      {page === "resources" && <ResourcesPage />}
+
+      {/* Footer */}
+      <footer className="py-12 border-t bg-slate-50 mt-16">
+        <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-4 gap-10">
+          <div>
+            <img src={LOGO_PATH} alt="Purella Water" className="h-10 w-auto" />
+            <p className="text-sm text-slate-600 mt-3">Factory-direct water systems engineered for vitality, well-being, and hydration.</p>
+            <div className="mt-4 text-sm">Call Us: <a href={PHONE_TEL} className="font-semibold">{PHONE_DISPLAY}</a></div>
+          </div>
+          <div>
+            <h4 className="font-bold mb-3">Services</h4>
+            <ul className="space-y-2 text-sm text-slate-700">
+              <li><a onClick={() => { window.location.hash = "filtration"; }} className="cursor-pointer">Advanced Filtration</a></li>
+              <li><a onClick={() => { window.location.hash = "softening"; }} className="cursor-pointer">Water Softening</a></li>
+              <li><a onClick={() => { window.location.hash = "well"; }} className="cursor-pointer">Well Water & Specialty</a></li>
+              <li><a onClick={() => { window.location.hash = "conditioners"; }} className="cursor-pointer">Saltless Conditioners</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-bold mb-3">Company</h4>
+            <ul className="space-y-2 text-sm text-slate-700">
+              <li><a onClick={() => { window.location.hash = "process"; }} className="cursor-pointer">Installation & Process</a></li>
+              <li><a onClick={() => { window.location.hash = "resources"; }} className="cursor-pointer">Resources & FAQ</a></li>
+              <li><a href="https://www.purellawater.com" target="_blank" rel="noreferrer" className="underline">www.purellawater.com</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-bold mb-3">Get a Free Estimate</h4>
+            <p className="text-sm text-slate-600">Tell us a bit about your home and we’ll schedule your free water test.</p>
+            <a
+              onClick={() => { window.location.hash = "home"; }}
+              className="mt-3 inline-flex items-center rounded-2xl px-4 py-2 text-sm font-semibold shadow-sm bg-cyan-600 text-white hover:bg-cyan-700 transition cursor-pointer"
+            >
+              Start My Free Test
+            </a>
+          </div>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 mt-8 text-xs text-slate-500 text-center">
+          © {new Date().getFullYear()} Purella Water • <a href="https://www.purellawater.com" className="underline">www.purellawater.com</a>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+/* ---------------- Process ---------------- */
 function ProcessPage() {
   return (
     <main className="max-w-7xl mx-auto px-4 py-16">
@@ -359,7 +516,7 @@ function ProcessPage() {
             ),
           },
           { n: 4, t: "Manufacture", d: "Your system is assembled and QA’d at our Florida factory to perfectly match your home’s unique water chemistry — built locally, tested for precision, and backed by our lab-engineered design." },
-          { n: 5, t: "Install", d: "Local office teams — experts trained specifically in Purella systems — install, program, and fine-tune your setup so it performs flawlessly in your home. They ensure every connection, flow rate, and valve is optimized for your unique plumbing and water chemistry." },
+          { n: 5, t: "Install", d: "Local office teams — experts trained specifically in Purella systems — install, program, and fine-tune your setup so it performs flawlessly in your home." },
           { n: 6, t: "Care", d: "Purella is your system’s manufacturer and lifelong support partner. Whether you prefer full-service maintenance or handling upkeep yourself, we’re here to provide factory-direct guidance, parts, and support for the life of your system." },
         ].map((s) => (
           <div key={s.n} className="rounded-3xl border p-6">
@@ -375,7 +532,7 @@ function ProcessPage() {
         <div className="rounded-3xl overflow-hidden border shadow-sm">
           <img src="/images/purella-factory.jpg" alt="Purella Factory Assembly in Florida" className="w-full h-auto object-cover" />
           <div className="p-4 text-sm text-slate-700">
-            <strong>Made in Florida.</strong> Every Purella water system is assembled in our Florida manufacturing facility. Each unit is precision-built to your unique water chemistry and plumbing — a level of customization no other company matches.
+            <strong>Made in Florida.</strong> Every Purella water system is assembled in our Florida manufacturing facility. Each unit is precision-built to your unique water chemistry and plumbing.
           </div>
         </div>
         <div className="rounded-3xl overflow-hidden border shadow-sm">
@@ -388,154 +545,5 @@ function ProcessPage() {
 
       <CtaPrimary href="#lead">Book My Free Water Test</CtaPrimary>
     </main>
-  );
-}
-
-// ---------------- Resources ----------------
-function ResourcesPage() {
-  const faqs = [
-    { q: "How long does installation take?", a: "Most installs are completed in a day. Larger or well-water setups may vary." },
-    { q: "Do you offer financing?", a: "Yes — flexible monthly plans are available for qualified buyers." },
-    { q: "Will this remove chlorine taste?", a: "Yes — our carbon media targets chlorine, taste & odor." },
-    { q: "Do you service existing systems?", a: "We offer service for our systems and many common brands." },
-  ];
-  return (
-    <main className="max-w-7xl mx-auto px-4 py-16">
-      <SectionTitle>Resources & FAQ</SectionTitle>
-      <p className="mt-3 text-slate-700 max-w-2xl">Learn about local water quality, signs you need a softener, and how Purella systems are maintained.</p>
-      <div className="mt-8 grid md:grid-cols-2 gap-6">
-        <article className="rounded-3xl border p-6 bg-white">
-          <h3 className="font-bold text-lg">Articles</h3>
-          <ul className="mt-3 space-y-2 text-sm text-cyan-700">
-            <li><a href="#">What’s in Florida’s Tap Water?</a></li>
-            <li><a href="#">Hardness Levels Explained</a></li>
-            <li><a href="#">How Often Should I Service My System?</a></li>
-          </ul>
-        </article>
-        <article className="rounded-3xl border p-6 bg-white">
-          <h3 className="font-bold text-lg">FAQs</h3>
-          <div className="mt-3 grid gap-3">
-            {faqs.map((f) => (
-              <details key={f.q} className="rounded-2xl border p-4">
-                <summary className="font-semibold cursor-pointer">{f.q}</summary>
-                <p className="mt-2 text-sm text-slate-700">{f.a}</p>
-              </details>
-            ))}
-          </div>
-        </article>
-      </div>
-    </main>
-  );
-}
-
-// ---------------- App Shell (hash router) ----------------
-export default function App() {
-  const [page, setPage] = useState<Page>("home");
-
-  useEffect(() => {
-    const fromHash = () => {
-      const h = (window?.location?.hash || "#home").replace("#", "") as Page;
-      if (["home", "filtration", "softening", "conditioners", "well", "process", "resources"].includes(h)) setPage(h);
-    };
-    fromHash();
-    window.addEventListener("hashchange", fromHash);
-    return () => window.removeEventListener("hashchange", fromHash);
-  }, []);
-
-  const NavLink = ({ label, target }: { label: string; target: Page }) => (
-    <a
-      onClick={() => {
-        setPage(target);
-        window.location.hash = target;
-      }}
-      className={`px-3 py-2 rounded-xl text-sm font-semibold hover:bg-slate-100 cursor-pointer ${page === target ? "text-cyan-700 underline" : "text-slate-700"}`}
-    >
-      {label}
-    </a>
-  );
-
-  return (
-    <div className="min-h-screen bg-white text-slate-900">
-      {/* Header */}
-      <div className="sticky top-0 z-40 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 border-b">
-        <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img src={LOGO_PATH} alt="Purella Water" className="h-10 w-auto" />
-            <span className="text-sm hidden md:inline font-medium">Vitality • Well-being • Hydration</span>
-          </div>
-          <nav className="flex items-center gap-1 md:gap-3">
-            <NavLink label="Home" target="home" />
-            <NavLink label="Advanced Filtration" target="filtration" />
-            <NavLink label="Softening" target="softening" />
-            <NavLink label="Conditioners" target="conditioners" />
-            <NavLink label="Well Water" target="well" />
-            <NavLink label="Process" target="process" />
-            <NavLink label="Resources" target="resources" />
-          </nav>
-          <div className="flex items-center gap-3">
-            <a href={"tel:18885550199"} className="text-sm md:text-base font-semibold">(888) 555-0199</a>
-            <a
-              onClick={() => {
-                setPage("home");
-                window.location.hash = "home";
-              }}
-              className="inline-flex items-center rounded-2xl px-4 py-2 text-sm md:text-base font-semibold shadow-sm bg-cyan-600 text-white hover:bg-cyan-700 transition cursor-pointer"
-            >
-              Free Water Test
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* Route mounts */}
-      {page === "home" && <HomePage />}
-      {page === "filtration" && <AdvancedFiltrationPage />}
-      {page === "softening" && <SofteningPage />}
-      {page === "conditioners" && <ConditionersPage />}
-      {page === "well" && <WellWaterPage />}
-      {page === "process" && <ProcessPage />}
-      {page === "resources" && <ResourcesPage />}
-
-      {/* Footer */}
-      <footer className="py-12 border-t bg-slate-50 mt-16">
-        <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-4 gap-10">
-          <div>
-            <img src={LOGO_PATH} alt="Purella Water" className="h-10 w-auto" />
-            <p className="text-sm text-slate-600 mt-3">Factory-direct water systems engineered for vitality, well-being, and hydration.</p>
-            <div className="mt-4 text-sm">Call Us: <a href={"tel:18885550199"} className="font-semibold">(888) 555-0199</a></div>
-          </div>
-          <div>
-            <h4 className="font-bold mb-3">Services</h4>
-            <ul className="space-y-2 text-sm text-slate-700">
-              <li><a onClick={() => { window.location.hash = "filtration"; }} className="cursor-pointer">Advanced Filtration</a></li>
-              <li><a onClick={() => { window.location.hash = "softening"; }} className="cursor-pointer">Water Softening</a></li>
-              <li><a onClick={() => { window.location.hash = "well"; }} className="cursor-pointer">Well Water & Specialty</a></li>
-              <li><a onClick={() => { window.location.hash = "conditioners"; }} className="cursor-pointer">Conditioners</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-bold mb-3">Company</h4>
-            <ul className="space-y-2 text-sm text-slate-700">
-              <li><a onClick={() => { window.location.hash = "process"; }} className="cursor-pointer">Installation & Process</a></li>
-              <li><a onClick={() => { window.location.hash = "resources"; }} className="cursor-pointer">Resources & FAQ</a></li>
-              <li><a href="https://www.purellawater.com" target="_blank" rel="noreferrer" className="underline">www.purellawater.com</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-bold mb-3">Get a Free Estimate</h4>
-            <p className="text-sm text-slate-600">Tell us a bit about your home and we’ll schedule your free water test.</p>
-            <a
-              onClick={() => { window.location.hash = "home"; }}
-              className="mt-3 inline-flex items-center rounded-2xl px-4 py-2 text-sm font-semibold shadow-sm bg-cyan-600 text-white hover:bg-cyan-700 transition cursor-pointer"
-            >
-              Start My Free Test
-            </a>
-          </div>
-        </div>
-        <div className="max-w-7xl mx-auto px-4 mt-8 text-xs text-slate-500 text-center">
-          © {new Date().getFullYear()} Purella Water • <a href="https://www.purellawater.com" className="underline">www.purellawater.com</a>
-        </div>
-      </footer>
-    </div>
   );
 }
