@@ -1,0 +1,1 @@
+export default function App(){return <div className='p-10'>Purella Water placeholder. Replace with the full App.tsx from canvas if needed.</div>}
